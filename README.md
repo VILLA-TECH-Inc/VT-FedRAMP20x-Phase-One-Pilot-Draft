@@ -13,7 +13,7 @@ STRUCTURA.IO is Villa-Tech’s flagship product, an AI-assisted, low-code platfo
 
 This draft submission details the methodology for validating the suggested FedRAMP Key Security Indicators (KSIs). Each KSI defines a security goal and encompasses several validations to illustrate compliance. The Cloud Service Provider (CSP) will generate machine-readable assertions (PASS/FAIL) for every validation, in addition to a score that reflects the overall compliance for each KSI. Furthermore, a threshold value will be established for what qualifies as a PASS. During our audit procedure, we plan to engage a 3PAO to authenticate the precision and purpose of each validation. This process will involve examining the validation logic and its corresponding KSI through traditional audit processes like interviews and walkthroughs. 
  
-<h3>Sample KSI validation</h3>
+<h3>Sample KSI validation output</h3>
 
     "KSI-CMT": {
       "name": "Configuration Management and Templates",
@@ -36,7 +36,7 @@ This draft submission details the methodology for validating the suggested FedRA
 
 <h2>Automation and Machine Readable Data Requirement</h2> 
 
-Data Schema and full machine readable package found within files:
+Data Schema and full machine readable package found within these text files:
 <ul>
  <li><a href="https://github.com/VILLA-TECH-Inc/VT-FedRAMP20x-Phase-One-Pilot-Draft/blob/main/KSI-validation-template.txt">KSI-validation-template.txt</a></li>
  <li><a href="https://github.com/VILLA-TECH-Inc/VT-FedRAMP20x-Phase-One-Pilot-Draft/blob/main/KSI-validation-results.txt">KSI-validation-results.txt</a></li>
