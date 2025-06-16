@@ -11,7 +11,7 @@ STRUCTURA.IO is Villa-Tech’s flagship product, an AI-assisted, low-code platfo
 
 <h2>KSI Validation & Evidence </h2>
 
-This draft submission details the methodology for validating the suggested FedRAMP Key Security Indicators (KSIs). Each KSI defines a security goal and encompasses several validations to illustrate compliance. The Cloud Service Provider (CSP) will generate machine-readable assertions (PASS/FAIL) for every validation, in addition to a score that reflects the overall compliance for each KSI. Furthermore, a threshold value will be established for what qualifies as a PASS. During our audit procedure, we plan to engage a 3PAO to authenticate the precision and purpose of each validation. This process will involve examining the validation logic and its corresponding KSI through traditional audit processes like interviews and walkthroughs. 
+This draft submission details the methodology for validating the suggested FedRAMP Key Security Indicators (KSIs). Each KSI defines a security goal and encompasses several validations to illustrate compliance. The Cloud Service Provider (CSP) will generate machine-readable assertions ("FULLY_IMPLEMENTED", "PARTIALLY_IMPLEMENTED", "NOT_IMPLEMENTED", "NOT_APPLICABLE") for every validation, in addition to a score that reflects the overall compliance for each KSI. Furthermore, a threshold value will be established for what qualifies as FULLY_IMPLEMENTED, PARTIALLY_IMPLEMENTED, NOT_IMPLEMENTED, or NOT_APPLICABLE. During our audit procedure, we plan to engage a 3PAO to authenticate the precision and purpose of each validation. This process will involve examining the validation logic and its corresponding KSI through traditional audit processes like interviews and walkthroughs. 
  
 <h3>Sample KSI validation output</h3>
 
@@ -50,7 +50,7 @@ Although we have yet to establish a working relationship with a 3PAO, once conne
 
 <h2>Continuous Reporting Prototype</h2>
 
-Our methodology for continuous reporting will leverage our proprietary cloud service, STRUCTURA.IO, to deliver a customer-facing dashboard that is updated daily with the results of Key Security Indicators (KSIs). This dashboard provides comprehensive insights by displaying the validation description, KSI name, KSI ID, result (pass/fail/partial), and the last run timestamp. By utilizing this approach, we ensure that our clients have real-time access to critical security metrics, enabling them to make informed decisions and maintain robust security postures. 
+Our methodology for continuous reporting will leverage our proprietary cloud service, STRUCTURA.IO, to deliver a customer-facing dashboard that is updated daily with the results of Key Security Indicators (KSIs). This dashboard provides comprehensive insights by displaying the validation description, KSI name, KSI ID, result ("FULLY_COMPLIANT", "SUBSTANTIALLY_COMPLIANT", "PARTIALLY_COMPLIANT", "NON_COMPLIANT"), and the last run timestamp. By utilizing this approach, we ensure that our clients have real-time access to critical security metrics, enabling them to make informed decisions and maintain robust security postures. 
 
 
  
