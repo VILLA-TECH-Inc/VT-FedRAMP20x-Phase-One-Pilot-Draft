@@ -1,0 +1,387 @@
+resource "local_file" "fedramp_compliance_template" {
+  filename = "${path.module}/templates/fedramp-low-compliance-template.json"
+  content = jsonencode({
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://compliance.structura.io/schemas/fedramp-low-v1.0.json",
+    "title": "FedRAMP Low Compliance Report Template",
+    "description": "Machine-readable template for FedRAMP Low compliance assessments",
+    "type": "object",
+    "required": [
+      "report_metadata",
+      "executive_summary", 
+      "fedramp_low_ksi_assessment",
+      "security_controls_matrix",
+      "infrastructure_assessment",
+      "compliance_gaps",
+      "recommendations",
+      "next_assessment",
+      "certification_readiness"
+    ],
+    "properties": {
+      "report_metadata": {
+        "type": "object",
+        "required": ["report_id", "project_id", "report_date", "compliance_framework"],
+        "properties": {
+          "report_id": {
+            "type": "string",
+            "pattern": "^fedramp-low-compliance-[a-zA-Z0-9-]+$",
+            "description": "Unique identifier for the compliance report"
+          },
+          "project_id": {
+            "type": "string",
+            "description": "STRUCTURA.IO project identifier"
+          },
+          "report_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp of report generation"
+          },
+          "compliance_framework": {
+            "type": "string",
+            "enum": ["FedRAMP Low", "FedRAMP Moderate", "FedRAMP High"],
+            "description": "Target compliance framework"
+          },
+          "architecture_type": {
+            "type": "string",
+            "enum": ["Cloud Native", "Hybrid", "On-Premises", "Multi-Cloud"],
+            "description": "System architecture classification"
+          },
+          "cloud_provider": {
+            "type": "string",
+            "enum": ["Microsoft Azure Government", "AWS GovCloud", "Google Cloud", "Multi-Cloud"],
+            "description": "Primary cloud service provider"
+          },
+          "assessment_version": {
+            "type": "string",
+            "pattern": "^\\d+\\.\\d+$",
+            "description": "Version of the assessment methodology"
+          },
+          "assessor": {
+            "type": "string",
+            "description": "Entity or system performing the assessment"
+          }
+        }
+      },
+      "executive_summary": {
+        "type": "object",
+        "required": ["overall_compliance_score", "total_ksis", "compliance_level"],
+        "properties": {
+          "overall_compliance_score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Overall compliance percentage (0-100)"
+          },
+          "total_ksis": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "Total number of Key Security Implementation areas"
+          },
+          "fully_implemented": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of fully implemented KSIs"
+          },
+          "partially_implemented": {
+            "type": "integer", 
+            "minimum": 0,
+            "description": "Number of partially implemented KSIs"
+          },
+          "failed": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of failed KSIs"
+          },
+          "compliance_level": {
+            "type": "string",
+            "enum": ["FULLY_COMPLIANT", "SUBSTANTIALLY_COMPLIANT", "PARTIALLY_COMPLIANT", "NON_COMPLIANT"],
+            "description": "Overall compliance status classification"
+          },
+          "critical_findings": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of critical severity findings"
+          },
+          "high_findings": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of high severity findings"
+          },
+          "medium_findings": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of medium severity findings"
+          },
+          "low_findings": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of low severity findings"
+          }
+        }
+      },
+      "fedramp_low_ksi_assessment": {
+        "type": "object",
+        "required": ["KSI-CNA", "KSI-SVC", "KSI-IAM", "KSI-MLA", "KSI-CMT", "KSI-PIY", "KSI-TPR", "KSI-CED", "KSI-RPL", "KSI-INR"],
+        "properties": {
+          "KSI-CNA": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-SVC": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-IAM": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-MLA": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-CMT": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-PIY": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-TPR": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-CED": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-RPL": { "$ref": "#/$defs/ksi_assessment" },
+          "KSI-INR": { "$ref": "#/$defs/ksi_assessment" }
+        }
+      },
+      "security_controls_matrix": {
+        "type": "object",
+        "properties": {
+          "access_control": { "$ref": "#/$defs/control_family" },
+          "audit_accountability": { "$ref": "#/$defs/control_family" },
+          "configuration_management": { "$ref": "#/$defs/control_family" },
+          "identification_authentication": { "$ref": "#/$defs/control_family" },
+          "system_communications_protection": { "$ref": "#/$defs/control_family" },
+          "system_information_integrity": { "$ref": "#/$defs/control_family" },
+          "incident_response": { "$ref": "#/$defs/control_family" },
+          "maintenance": { "$ref": "#/$defs/control_family" },
+          "media_protection": { "$ref": "#/$defs/control_family" },
+          "physical_environmental_protection": { "$ref": "#/$defs/control_family" },
+          "planning": { "$ref": "#/$defs/control_family" },
+          "personnel_security": { "$ref": "#/$defs/control_family" },
+          "risk_assessment": { "$ref": "#/$defs/control_family" },
+          "system_services_acquisition": { "$ref": "#/$defs/control_family" }
+        }
+      },
+      "infrastructure_assessment": {
+        "type": "object",
+        "properties": {
+          "network_security": { "$ref": "#/$defs/infrastructure_component" },
+          "compute_security": { "$ref": "#/$defs/infrastructure_component" },
+          "data_protection": { "$ref": "#/$defs/infrastructure_component" },
+          "monitoring_logging": { "$ref": "#/$defs/infrastructure_component" },
+          "identity_access": { "$ref": "#/$defs/infrastructure_component" },
+          "backup_recovery": { "$ref": "#/$defs/infrastructure_component" }
+        }
+      },
+      "compliance_gaps": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/compliance_gap" }
+      },
+      "recommendations": {
+        "type": "array",
+        "items": { "$ref": "#/$defs/recommendation" }
+      },
+      "next_assessment": {
+        "type": "object",
+        "required": ["recommended_date", "frequency"],
+        "properties": {
+          "recommended_date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 timestamp for next assessment"
+          },
+          "frequency": {
+            "type": "string",
+            "enum": ["Monthly", "Quarterly", "Semi-Annual", "Annual"],
+            "description": "Recommended assessment frequency"
+          },
+          "focus_areas": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Areas requiring focused attention in next assessment"
+          }
+        }
+      },
+      "certification_readiness": {
+        "type": "object",
+        "required": ["fedramp_low_ready", "estimated_ato_timeline"],
+        "properties": {
+          "fedramp_low_ready": {
+            "type": "boolean",
+            "description": "Whether system is ready for FedRAMP Low ATO"
+          },
+          "estimated_ato_timeline": {
+            "type": "string",
+            "pattern": "^\\d+-\\d+ (days|weeks|months)$",
+            "description": "Estimated timeline to achieve ATO"
+          },
+          "critical_blockers": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of critical issues blocking certification"
+          },
+          "documentation_completeness": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Percentage of required documentation completed"
+          },
+          "technical_implementation": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Percentage of technical controls implemented"
+          }
+        }
+      }
+    },
+    "$defs": {
+      "ksi_assessment": {
+        "type": "object",
+        "required": ["name", "status", "score"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Human-readable name of the KSI"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["FULLY_IMPLEMENTED", "PARTIALLY_IMPLEMENTED", "NOT_IMPLEMENTED", "NOT_APPLICABLE"],
+            "description": "Implementation status of the KSI"
+          },
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Compliance score for this KSI (0-100)"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of evidence supporting the assessment"
+          },
+          "findings": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/finding" },
+            "description": "List of findings for this KSI"
+          }
+        }
+      },
+      "finding": {
+        "type": "object",
+        "required": ["severity", "finding", "recommendation"],
+        "properties": {
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"],
+            "description": "Severity level of the finding"
+          },
+          "finding": {
+            "type": "string",
+            "description": "Description of the finding"
+          },
+          "recommendation": {
+            "type": "string",
+            "description": "Recommended remediation action"
+          },
+          "control_reference": {
+            "type": "string",
+            "description": "NIST 800-53 control reference(s)"
+          }
+        }
+      },
+      "control_family": {
+        "type": "object",
+        "patternProperties": {
+          "^[a-z]{2}_\\d+$": {
+            "type": "string",
+            "pattern": "^(IMPLEMENTED|PARTIALLY_IMPLEMENTED|NOT_IMPLEMENTED|NOT_APPLICABLE) - .+$",
+            "description": "Control implementation status with description"
+          }
+        }
+      },
+      "infrastructure_component": {
+        "type": "object",
+        "required": ["status"],
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["COMPLIANT", "PARTIALLY_COMPLIANT", "NON_COMPLIANT", "NOT_ASSESSED"],
+            "description": "Compliance status of the infrastructure component"
+          },
+          "components": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of specific components assessed"
+          },
+          "findings": {
+            "type": "array",
+            "items": { "$ref": "#/$defs/finding" },
+            "description": "Findings specific to this infrastructure component"
+          }
+        }
+      },
+      "compliance_gap": {
+        "type": "object",
+        "required": ["gap_id", "severity", "category", "description", "remediation"],
+        "properties": {
+          "gap_id": {
+            "type": "string",
+            "pattern": "^GAP-\\d{3}$",
+            "description": "Unique identifier for the compliance gap"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+            "description": "Severity level of the gap"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the compliance gap"
+          },
+          "description": {
+            "type": "string",
+            "description": "Detailed description of the gap"
+          },
+          "affected_controls": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[A-Z]{2}-\\d+$"
+            },
+            "description": "NIST 800-53 controls affected by this gap"
+          },
+          "remediation": {
+            "type": "string",
+            "description": "Recommended remediation steps"
+          },
+          "timeline": {
+            "type": "string",
+            "description": "Recommended timeline for remediation"
+          }
+        }
+      },
+      "recommendation": {
+        "type": "object",
+        "required": ["priority", "category", "recommendation"],
+        "properties": {
+          "priority": {
+            "type": "string",
+            "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW"],
+            "description": "Priority level of the recommendation"
+          },
+          "category": {
+            "type": "string",
+            "description": "Category of the recommendation"
+          },
+          "recommendation": {
+            "type": "string",
+            "description": "Detailed recommendation text"
+          },
+          "business_impact": {
+            "type": "string",
+            "description": "Expected business impact of implementing the recommendation"
+          }
+        }
+      }
+    }
+  })
+}
