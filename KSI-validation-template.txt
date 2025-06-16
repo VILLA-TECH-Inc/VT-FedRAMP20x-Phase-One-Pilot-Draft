@@ -4,10 +4,11 @@ resource "local_file" "fedramp_compliance_template" {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "$id": "https://compliance.structura.io/schemas/fedramp-low-v1.0.json",
     "title": "FedRAMP Low Compliance Report Template",
-    "description": "Machine-readable template for FedRAMP Low compliance assessments",
+    "description": "Machine-readable template for FedRAMP Low compliance assessments with detailed scoring methodology",
     "type": "object",
     "required": [
       "report_metadata",
+      "scoring_methodology",
       "executive_summary", 
       "fedramp_low_ksi_assessment",
       "security_controls_matrix",
@@ -62,6 +63,254 @@ resource "local_file" "fedramp_compliance_template" {
           }
         }
       },
+      "scoring_methodology": {
+        "type": "object",
+        "required": ["calculation_method", "status_assignment_rules", "weighting_factors"],
+        "properties": {
+          "calculation_method": {
+            "type": "object",
+            "required": ["overall_score_formula", "ksi_score_calculation"],
+            "properties": {
+              "overall_score_formula": {
+                "type": "string",
+                "default": "Weighted average of all KSI scores: (Σ(KSI_score × KSI_weight)) / Σ(KSI_weight)",
+                "description": "Mathematical formula used to calculate overall compliance score"
+              },
+              "ksi_score_calculation": {
+                "type": "string",
+                "default": "Based on control implementation percentage and finding severity deductions",
+                "description": "Method for calculating individual KSI scores"
+              },
+              "score_ranges": {
+                "type": "object",
+                "properties": {
+                  "fully_implemented": {
+                    "type": "object",
+                    "properties": {
+                      "min_score": { "type": "integer", "default": 90 },
+                      "max_score": { "type": "integer", "default": 100 },
+                      "description": { "type": "string", "default": "90-100% implementation with no critical findings" }
+                    }
+                  },
+                  "partially_implemented": {
+                    "type": "object",
+                    "properties": {
+                      "min_score": { "type": "integer", "default": 50 },
+                      "max_score": { "type": "integer", "default": 89 },
+                      "description": { "type": "string", "default": "50-89% implementation or critical findings present" }
+                    }
+                  },
+                  "not_implemented": {
+                    "type": "object",
+                    "properties": {
+                      "min_score": { "type": "integer", "default": 0 },
+                      "max_score": { "type": "integer", "default": 49 },
+                      "description": { "type": "string", "default": "0-49% implementation or fundamental control failures" }
+                    }
+                  },
+                  "not_applicable": {
+                    "type": "object",
+                    "properties": {
+                      "score": { "type": "string", "default": "N/A" },
+                      "description": { "type": "string", "default": "Control not applicable to system architecture or business requirements" }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "status_assignment_rules": {
+            "type": "object",
+            "required": ["fully_implemented", "partially_implemented", "not_implemented", "not_applicable"],
+            "properties": {
+              "fully_implemented": {
+                "type": "object",
+                "properties": {
+                  "criteria": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "All required controls are implemented and operational",
+                      "Compliance score >= 90%",
+                      "No critical or high severity findings",
+                      "All evidence artifacts are present and current",
+                      "Controls are tested and validated within last 12 months"
+                    ]
+                  },
+                  "evidence_requirements": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "Technical configuration evidence",
+                      "Policy and procedure documentation",
+                      "Testing and validation results",
+                      "Monitoring and logging evidence"
+                    ]
+                  }
+                }
+              },
+              "partially_implemented": {
+                "type": "object",
+                "properties": {
+                  "criteria": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "Some required controls are implemented but gaps exist",
+                      "Compliance score between 50-89%",
+                      "Critical findings present but remediation plan exists",
+                      "Some evidence artifacts missing or outdated",
+                      "Controls partially tested or validation incomplete"
+                    ]
+                  },
+                  "common_scenarios": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "Technical controls implemented but documentation incomplete",
+                      "Policies exist but not fully operationalized",
+                      "Controls implemented but not regularly tested",
+                      "Compensating controls in place for missing primary controls"
+                    ]
+                  }
+                }
+              },
+              "not_implemented": {
+                "type": "object",
+                "properties": {
+                  "criteria": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "Required controls are not implemented or non-functional",
+                      "Compliance score < 50%",
+                      "Critical findings with no remediation plan",
+                      "Missing essential evidence artifacts",
+                      "No testing or validation performed"
+                    ]
+                  },
+                  "risk_implications": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "High risk of security incidents",
+                      "Non-compliance with regulatory requirements",
+                      "Potential for data breaches or system compromise",
+                      "ATO approval unlikely without significant remediation"
+                    ]
+                  }
+                }
+              },
+              "not_applicable": {
+                "type": "object",
+                "properties": {
+                  "criteria": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "Control requirements do not apply to system architecture",
+                      "Business requirements exclude control applicability",
+                      "Alternative controls provide equivalent protection",
+                      "System design inherently addresses control objectives"
+                    ]
+                  },
+                  "documentation_requirements": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": [
+                      "Formal determination of non-applicability",
+                      "Technical justification for exclusion",
+                      "Alternative control mapping if applicable",
+                      "Approval from authorizing official"
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "weighting_factors": {
+            "type": "object",
+            "properties": {
+              "ksi_weights": {
+                "type": "object",
+                "properties": {
+                  "KSI-CNA": { "type": "number", "default": 1.2, "description": "Cloud Native Architecture - Higher weight due to foundational importance" },
+                  "KSI-SVC": { "type": "number", "default": 1.0, "description": "Service Management - Standard weight" },
+                  "KSI-IAM": { "type": "number", "default": 1.3, "description": "Identity and Access Management - Critical security control" },
+                  "KSI-MLA": { "type": "number", "default": 1.1, "description": "Monitoring, Logging, and Auditing - Important for compliance" },
+                  "KSI-CMT": { "type": "number", "default": 1.0, "description": "Configuration Management - Standard weight" },
+                  "KSI-PIY": { "type": "number", "default": 1.2, "description": "Privacy - High regulatory importance" },
+                  "KSI-TPR": { "type": "number", "default": 1.1, "description": "Third Party Risk - Supply chain security" },
+                  "KSI-CED": { "type": "number", "default": 1.3, "description": "Cryptography and Encryption - Critical for data protection" },
+                  "KSI-RPL": { "type": "number", "default": 1.0, "description": "Response and Recovery - Standard weight" },
+                  "KSI-INR": { "type": "number", "default": 1.1, "description": "Infrastructure Resilience - Important for availability" }
+                }
+              },
+              "finding_severity_deductions": {
+                "type": "object",
+                "properties": {
+                  "CRITICAL": { "type": "integer", "default": -25, "description": "Points deducted per critical finding" },
+                  "HIGH": { "type": "integer", "default": -15, "description": "Points deducted per high finding" },
+                  "MEDIUM": { "type": "integer", "default": -8, "description": "Points deducted per medium finding" },
+                  "LOW": { "type": "integer", "default": -3, "description": "Points deducted per low finding" },
+                  "INFORMATIONAL": { "type": "integer", "default": 0, "description": "No point deduction for informational findings" }
+                }
+              }
+            }
+          },
+          "compliance_level_thresholds": {
+            "type": "object",
+            "properties": {
+              "FULLY_COMPLIANT": {
+                "type": "object",
+                "properties": {
+                  "min_score": { "type": "integer", "default": 95 },
+                  "additional_requirements": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": ["No critical findings", "All KSIs fully implemented", "Complete documentation"]
+                  }
+                }
+              },
+              "SUBSTANTIALLY_COMPLIANT": {
+                "type": "object",
+                "properties": {
+                  "min_score": { "type": "integer", "default": 85 },
+                  "max_score": { "type": "integer", "default": 94 },
+                  "additional_requirements": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": ["No more than 2 critical findings", "Remediation plan for all findings"]
+                  }
+                }
+              },
+              "PARTIALLY_COMPLIANT": {
+                "type": "object",
+                "properties": {
+                  "min_score": { "type": "integer", "default": 70 },
+                  "max_score": { "type": "integer", "default": 84 },
+                  "additional_requirements": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": ["Significant remediation required", "Multiple KSIs partially implemented"]
+                  }
+                }
+              },
+              "NON_COMPLIANT": {
+                "type": "object",
+                "properties": {
+                  "max_score": { "type": "integer", "default": 69 },
+                  "characteristics": {
+                    "type": "array",
+                    "items": { "type": "string" },
+                    "default": ["Multiple critical findings", "Fundamental control failures", "ATO not recommended"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
       "executive_summary": {
         "type": "object",
         "required": ["overall_compliance_score", "total_ksis", "compliance_level"],
@@ -70,7 +319,24 @@ resource "local_file" "fedramp_compliance_template" {
             "type": "integer",
             "minimum": 0,
             "maximum": 100,
-            "description": "Overall compliance percentage (0-100)"
+            "description": "Overall compliance percentage calculated using weighted KSI scores"
+          },
+          "score_breakdown": {
+            "type": "object",
+            "properties": {
+              "weighted_ksi_contribution": {
+                "type": "number",
+                "description": "Contribution from weighted KSI scores"
+              },
+              "finding_deductions": {
+                "type": "number",
+                "description": "Total points deducted due to findings"
+              },
+              "calculation_details": {
+                "type": "string",
+                "description": "Detailed explanation of score calculation"
+              }
+            }
           },
           "total_ksis": {
             "type": "integer",
@@ -80,22 +346,27 @@ resource "local_file" "fedramp_compliance_template" {
           "fully_implemented": {
             "type": "integer",
             "minimum": 0,
-            "description": "Number of fully implemented KSIs"
+            "description": "Number of KSIs with scores >= 90% and no critical findings"
           },
           "partially_implemented": {
             "type": "integer", 
             "minimum": 0,
-            "description": "Number of partially implemented KSIs"
+            "description": "Number of KSIs with scores 50-89% or with critical findings but remediation plans"
           },
           "failed": {
             "type": "integer",
             "minimum": 0,
-            "description": "Number of failed KSIs"
+            "description": "Number of KSIs with scores < 50% or fundamental control failures"
+          },
+          "not_applicable": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Number of KSIs determined not applicable to system architecture"
           },
           "compliance_level": {
             "type": "string",
             "enum": ["FULLY_COMPLIANT", "SUBSTANTIALLY_COMPLIANT", "PARTIALLY_COMPLIANT", "NON_COMPLIANT"],
-            "description": "Overall compliance status classification"
+            "description": "Overall compliance status based on score thresholds and finding severity"
           },
           "critical_findings": {
             "type": "integer",
@@ -241,13 +512,38 @@ resource "local_file" "fedramp_compliance_template" {
           "status": {
             "type": "string",
             "enum": ["FULLY_IMPLEMENTED", "PARTIALLY_IMPLEMENTED", "NOT_IMPLEMENTED", "NOT_APPLICABLE"],
-            "description": "Implementation status of the KSI"
+            "description": "Implementation status determined by score thresholds and finding analysis"
           },
           "score": {
             "type": "integer",
             "minimum": 0,
             "maximum": 100,
-            "description": "Compliance score for this KSI (0-100)"
+            "description": "Compliance score calculated from control implementation percentage minus finding deductions"
+          },
+          "score_calculation": {
+            "type": "object",
+            "properties": {
+              "base_implementation_score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Base score from control implementation assessment"
+              },
+              "finding_deductions": {
+                "type": "integer",
+                "description": "Points deducted due to findings"
+              },
+              "final_score": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Final score after applying deductions"
+              },
+              "status_rationale": {
+                "type": "string",
+                "description": "Explanation of how status was determined from score and findings"
+              }
+            }
           },
           "evidence": {
             "type": "array",
@@ -270,7 +566,7 @@ resource "local_file" "fedramp_compliance_template" {
           "severity": {
             "type": "string",
             "enum": ["CRITICAL", "HIGH", "MEDIUM", "LOW", "INFORMATIONAL"],
-            "description": "Severity level of the finding"
+            "description": "Severity level affecting score calculation and status determination"
           },
           "finding": {
             "type": "string",
@@ -283,6 +579,10 @@ resource "local_file" "fedramp_compliance_template" {
           "control_reference": {
             "type": "string",
             "description": "NIST 800-53 control reference(s)"
+          },
+          "score_impact": {
+            "type": "integer",
+            "description": "Points deducted from KSI score due to this finding"
           }
         }
       },
