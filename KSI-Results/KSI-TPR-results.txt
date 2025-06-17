@@ -1,0 +1,18 @@
+{
+  "ksi_template": {
+    "name": "Third-Party Risk Management",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 100,
+    "evidence": [
+      "Supply chain risk assessment documentation and procedures",
+      "Third-party vendor inventory with risk ratings and assessments",
+      "Vendor security assessment procedures and questionnaires",
+      "Contract security requirements and service level agreements",
+      "Microsoft Azure Government FedRAMP authorization inherited",
+      "Container image scanning and vulnerability management",
+      "Software composition analysis for all dependencies",
+      "Continuous monitoring of third-party security posture"
+    ],
+    "findings": []
+  }
+}

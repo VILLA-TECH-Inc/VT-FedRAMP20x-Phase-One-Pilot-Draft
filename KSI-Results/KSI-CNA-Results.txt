@@ -1,0 +1,26 @@
+{
+  "ksi_template": {
+    "name": "Cloud Native Architecture",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 98,
+    "evidence": [
+      "Azure Virtual Network with proper segmentation (10.0.0.0/16)",
+      "Private AKS cluster (v1.28) with RBAC enabled",
+      "DDoS Protection Standard enabled for all public IPs",
+      "Azure Firewall Premium with threat intelligence and IDPS",
+      "Network Security Groups with restrictive inbound/outbound rules",
+      "Private endpoints implemented for all PaaS services",
+      "Multi-zone deployment for high availability",
+      "Host encryption enabled for all compute resources"
+    ],
+    "findings": [
+      {
+        "severity": "LOW",
+        "finding": "Network architecture documentation could include more detailed data flow diagrams",
+        "recommendation": "Create comprehensive network flow diagrams showing all data paths and security boundaries",
+        "control_reference": "SA-17",
+        "score_impact": -2
+      }
+    ]
+  }
+}

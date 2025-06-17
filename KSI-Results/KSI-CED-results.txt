@@ -1,0 +1,18 @@
+{
+  "ksi_template": {
+    "name": "Cryptography and Encryption",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 100,
+    "evidence": [
+      "Azure Key Vault Premium with HSM-backed keys (FIPS 140-2 Level 2)",
+      "Customer-managed encryption keys (BYOK) implementation",
+      "TLS 1.2 minimum enforced for all communications",
+      "Storage encryption at rest enabled for all storage accounts",
+      "AKS host encryption enabled for all compute resources",
+      "Database transparent data encryption (TDE) enabled",
+      "Automated key rotation policies and procedures",
+      "Cryptographic key lifecycle management procedures"
+    ],
+    "findings": []
+  }
+}

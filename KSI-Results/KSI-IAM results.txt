@@ -1,0 +1,18 @@
+{
+  "ksi_template": {
+    "name": "Identity and Access Management",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 100,
+    "evidence": [
+      "Azure Active Directory with phishing-resistant MFA enforcement",
+      "Conditional Access policies requiring MFA for all users",
+      "Privileged Identity Management (PIM) with just-in-time access",
+      "Role-based access control (RBAC) with least privilege principle",
+      "Service principal authentication with managed identities",
+      "Regular access reviews and certification processes",
+      "Automated account provisioning and deprovisioning",
+      "Session management with 8-hour sign-in frequency"
+    ],
+    "findings": []
+  }
+}

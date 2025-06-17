@@ -1,0 +1,26 @@
+{
+  "ksi_template": {
+    "name": "Configuration Management",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 95,
+    "evidence": [
+      "Terraform Infrastructure as Code with remote state management",
+      "Azure DevOps CI/CD pipelines with approval gates and testing",
+      "Change Tracking solution for file integrity monitoring",
+      "Configuration baseline enforcement via Azure Policy",
+      "Automated configuration drift detection and remediation",
+      "Version control for all infrastructure and configuration code",
+      "Automated backup of configuration data and state files",
+      "Configuration compliance monitoring with Azure Security Center"
+    ],
+    "findings": [
+      {
+        "severity": "LOW",
+        "finding": "Configuration management procedures documentation needs minor updates",
+        "recommendation": "Update CM procedures to reflect current automated processes and include rollback procedures",
+        "control_reference": "CM-1, CM-3",
+        "score_impact": -5
+      }
+    ]
+  }
+}

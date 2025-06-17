@@ -1,0 +1,19 @@
+{
+  "ksi_template": {
+    "name": "Monitoring, Logging, and Auditing",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 100,
+    "evidence": [
+      "Log Analytics Workspace with 730-day retention (exceeds 90-day requirement)",
+      "Azure Monitor with comprehensive metric collection across all resources",
+      "Azure Security Center with continuous security assessment",
+      "Activity log diagnostics enabled for subscription and all resources",
+      "AKS audit logging with detailed Kubernetes API server events",
+      "Key Vault audit logging with access and operation tracking",
+      "Network flow logs with traffic analytics and threat detection",
+      "Real-time alerting with automated response workflows",
+      "Microsoft Defender for Cloud with advanced threat protection"
+    ],
+    "findings": []
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "ksi_template": {
+    "name": "Privacy and Data Protection",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 98,
+    "evidence": [
+      "Data classification and handling procedures implemented",
+      "Privacy impact assessments completed for all data processing",
+      "Data retention policies aligned with FedRAMP requirements",
+      "Encryption at rest and in transit for all sensitive data",
+      "Data loss prevention controls via Azure Information Protection",
+      "Privacy training program for all personnel",
+      "Data subject rights procedures and automated workflows",
+      "Cross-border data transfer controls and documentation"
+    ],
+    "findings": []
+  }
+}

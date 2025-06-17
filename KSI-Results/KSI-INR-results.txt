@@ -1,0 +1,18 @@
+{
+  "ksi_template": {
+    "name": "Infrastructure Resilience",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 100,
+    "evidence": [
+      "Multi-zone AKS deployment across availability zones",
+      "Geo-redundant storage replication (GRS) for all critical data",
+      "Cross-region backup capabilities with automated failover",
+      "Auto-scaling enabled for all compute resources",
+      "Load balancing and traffic distribution with health probes",
+      "Infrastructure monitoring with proactive alerting",
+      "DDoS Protection Standard for network resilience",
+      "Automated failover and recovery procedures"
+    ],
+    "findings": []
+  }
+}

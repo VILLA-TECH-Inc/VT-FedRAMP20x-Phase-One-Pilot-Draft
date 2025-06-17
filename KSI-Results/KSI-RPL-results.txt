@@ -1,0 +1,18 @@
+{
+  "ksi_template": {
+    "name": "Response and Recovery",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 98,
+    "evidence": [
+      "Incident response automation workflows via Azure Logic Apps",
+      "Security incident playbooks and automated runbooks",
+      "Business continuity and disaster recovery procedures",
+      "Azure Recovery Services Vault with geo-redundant storage",
+      "Cross-region backup and restore capabilities",
+      "Recovery time and point objectives defined and tested",
+      "Regular disaster recovery testing and validation",
+      "Incident response team training and exercises"
+    ],
+    "findings": []
+  }
+}

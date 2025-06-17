@@ -1,0 +1,25 @@
+{
+  "ksi_template": {
+    "name": "Service Configuration Management",
+    "status": "FULLY_IMPLEMENTED",
+    "score": 96,
+    "evidence": [
+      "Azure Policy assignments enforcing FedRAMP Moderate baseline",
+      "Terraform Infrastructure as Code with state management",
+      "Service hardening configurations via Azure Security Center",
+      "Automated configuration management with drift detection",
+      "Configuration baseline enforcement via Azure Policy",
+      "Change tracking solution enabled for all resources",
+      "Automated patch management system with monthly schedules"
+    ],
+    "findings": [
+      {
+        "severity": "MEDIUM",
+        "finding": "Service configuration change approval process documentation needs enhancement",
+        "recommendation": "Document formal change approval workflows and implement automated approval gates in CI/CD pipeline",
+        "control_reference": "CM-3",
+        "score_impact": -4
+      }
+    ]
+  }
+}
