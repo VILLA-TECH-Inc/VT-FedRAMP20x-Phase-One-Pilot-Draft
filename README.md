@@ -39,7 +39,7 @@ This draft submission details the methodology for validating the suggested FedRA
 Data Schema and full machine readable package found within these text files:
 <ul>
  <li><a href="https://github.com/VILLA-TECH-Inc/VT-FedRAMP20x-Phase-One-Pilot-Draft/blob/main/KSI-validation-template.txt">KSI-validation-template.txt</a></li>
- <li><a href="https://github.com/VILLA-TECH-Inc/VT-FedRAMP20x-Phase-One-Pilot-Draft/blob/main/KSI-validation-results.txt">KSI-validation-results.txt</a></li>
+ <li><a href="https://github.com/VILLA-TECH-Inc/VT-FedRAMP20x-Phase-One-Pilot-Draft/tree/main/KSI-Results">KSI-validation-results results folder</a></li>
 </ul>
 
 <h2>3PAO Review </h2>
